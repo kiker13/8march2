@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<title>С 8 Марта</title>
+
+<style>
+:root{
+  --pink:#f6b8c6;
+  --peach:#ffe3ea;
+  --lav:#e8ddff;
+  --text:#333;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",sans-serif;
+  -webkit-tap-highlight-color: transparent; /* Убирает синюю рамку при клике на iPhone */
+}
+
+body, html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Запрет скролла */
+  background: #fff;
+  position: fixed; /* Фикс для iOS, чтобы не "прыгало" при свайпах */
+  touch-action: none;
+}
+
+body {
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== SCREENS ===== */
+.screen{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh; /* Динамическая высота для iPhone */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s ease, transform .6s ease;
+  z-index: 1;
+}
+
+.screen.active{
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* Эффект вылета */
+.screen.right { transform: scale(0.95); }
+
+/* ===== CONTENT ===== */
+.content{
+  width: 100%;
+  max-width: 420px;
+  padding: env(safe-area-inset-top) 24px env(safe-area-inset-bottom);
+  text-align: center;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+/* ===== TYPO ===== */
+h1{
+  font-size: clamp(28px, 8vw, 48px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle{
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* ===== INFO BLOCK ===== */
+.card{
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); /* Для Safari */
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.05);
+  margin-bottom: 24px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.card p{
+  font-size: 16px;
+  line-height: 1.5;
+  color: #444;
+}
+
+/* ===== BUTTON ===== */
+button.main{
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--pink), var(--peach));
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  box-shadow: 0 10px 25px rgba(246, 184, 198, 0.4);
+  cursor: pointer;
+  transition: .3s active;
+}
+
+button.main:active {
+  transform: scale(0.97); /* Эффект нажатия как в iOS */
+}
+
+/* ===== BACKGROUND OBJECTS ===== */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bg span{
+  position: absolute;
+  font-size: 22px;
+  opacity: .3;
+  animation: float 12s linear infinite;
+  will-change: transform;
+}
+
+@keyframes float{
+  from{ transform: translateY(110dvh) rotate(0); }
+  to{ transform: translateY(-10dvh) rotate(360deg); }
+}
+
+/* ===== MUSIC TOGGLE ===== */
+.music-toggle{
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  font-size: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.music-toggle.active{
+  background: var(--pink);
+  color: #fff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg" id="bg"></div>
+
+<!-- SCREEN 1 -->
+<div class="screen active" id="s1">
+  <div class="content">
+    <h1>С 8 Марта 🌸</h1>
+    <p class="subtitle">День красоты и вдохновения</p>
+
+    <div class="card">
+      <p>Пусть эта весна станет временем приятных перемен, уютных вечеров и исполнения тех самых маленьких желаний, которые вы постоянно откладываешь на потом.</p>
+    </div>
+
+    <button class="main" onclick="go(2)">>> ❤️</button>
+  </div>
+</div>
+
+<!-- SCREEN 2 -->
+<div class="screen right" id="s2">
+  <div class="content">
+    <h1>💖 Поздравление</h1>
+    <div class="card">
+      <p>Желаем гармонии, вдохновения и настоящего счастья. Пусть каждая мечта становится ближе с каждым днём.</p>
+    </div>
+    <button class="main" onclick="go(3)">Где мы ждем?</button>
+    <div style="height: 12px;"></div>
+    <button class="main" style="background: #f0f0f0; box-shadow: none;" onclick="go(1)">Назад</button>
+  </div>
+</div>
+
+<!-- SCREEN 3 -->
+<div class="screen right" id="s3">
+  <div class="content">
+    <h1>🏡 Адрес</h1>
+    <div class="card">
+      <p style="font-size: 20px;"><strong>29 микрорайон<br>Толкын-2, дом 82</strong></p>
+    </div>
+    <button class="main" onclick="go(2)">Назад</button>
+  </div>
+</div>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2023/03/05/audio_6b07b1c4b5.mp3">
+</audio>
+<button class="music-toggle" id="mBtn" onclick="toggleMusic()">🎵</button>
+
+<script>
+const screens = { 1: document.getElementById('s1'), 2: document.getElementById('s2'), 3: document.getElementById('s3') };
+
+function go(n) {
+  Object.values(screens).forEach(e => {
+    e.classList.remove("active");
+    e.classList.add("right");
+  });
+  screens[n].classList.add("active");
+  screens[n].classList.remove("right");
+}
+
+// Создание цветов
+const bg = document.getElementById('bg');
+for(let i=0; i<30; i++) {
+  const el = document.createElement("span");
+  el.textContent = Math.random() > 0.5 ? "🌸" : "💖";
+  el.style.left = Math.random() * 100 + "%";
+  el.style.fontSize = (15 + Math.random() * 15) + "px";
+  el.style.animationDuration = (8 + Math.random() * 10) + "s";
+  el.style.animationDelay = Math.random() * 5 + "s";
+  bg.appendChild(el);
+}
+
+// Музыка (Автоплей на iPhone часто заблокирован, поэтому запуск по первому клику)
+const music = document.getElementById("music");
+const btn = document.getElementById("mBtn");
+
+function toggleMusic() {
+  if (music.paused) {
+    music.play();
+    btn.classList.add("active");
+  } else {
+    music.pause();
+    btn.classList.remove("active");
+  }
+}
+
+// Запуск музыки при первом взаимодействии (для iOS)
+document.addEventListener('click', () => {
+  // music.play(); // Раскомментируйте, если хотите автозапуск при любом клике
+}, { once: true });
+</script>
+
+</body>
+</html>
